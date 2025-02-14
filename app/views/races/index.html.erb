@@ -17,7 +17,7 @@
         <td>
           <%= link_to "Show", race_path(race), class: "btn btn-info btn-sm" %>
           <%= link_to "Edit", edit_race_path(race), class: "btn btn-warning btn-sm" %>
-          <%=  button_to "Delete", race_path(race), method: :delete, class: "btn btn-danger btn-sm" %>
+          <%= button_to "Delete", race_path(race), method: :delete, form: { class: "d-inline" }, class: "btn btn-danger btn-sm" %>
         </td>
       </tr>
     <% end %>
