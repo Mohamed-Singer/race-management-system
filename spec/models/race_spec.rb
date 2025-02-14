@@ -168,5 +168,57 @@ RSpec.describe Race, type: :model do
         end
       end
     end
+
+    context "nested attributes validations" do
+      context "when validating lane uniqueness among race entries" do
+        it "is valid when all lanes are unique" do
+          race = Race.new(
+            name: "Test Race",
+            race_entries_attributes: [
+              { student_name: "Mo", lane: 1 },
+              { student_name: "Moe", lane: 2 }
+            ]
+          )
+          expect(race).to be_valid
+        end
+
+        it "is invalid when duplicate lanes exist" do
+          race = Race.new(
+            name: "Test Race",
+            race_entries_attributes: [
+              { student_name: "Mo", lane: 1 },
+              { student_name: "Moe", lane: 1 }
+            ]
+          )
+          expect(race).not_to be_valid
+          expect(race.errors[:base]).to include("Each lane must be unique within a race")
+        end
+      end
+
+      context "when validating student name uniqueness among race entries" do
+        it "is valid when all student names are unique" do
+          race = Race.new(
+            name: "Test Race",
+            race_entries_attributes: [
+              { student_name: "Mo", lane: 1 },
+              { student_name: "Singer", lane: 2 }
+            ]
+          )
+          expect(race).to be_valid
+        end
+
+        it "is invalid when duplicate student names exist (case-insensitive)" do
+          race = Race.new(
+            name: "Test Race",
+            race_entries_attributes: [
+              { student_name: "Mo", lane: 1 },
+              { student_name: "mo", lane: 2 }
+            ]
+          )
+          expect(race).not_to be_valid
+          expect(race.errors[:base]).to include("Each student can only be assigned once per race")
+        end
+      end
+    end
   end
 end

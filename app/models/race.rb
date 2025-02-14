@@ -7,6 +7,8 @@ class Race < ApplicationRecord
 
   validate :validate_minimum_race_entries
   validate :validate_final_places_consistency
+  validate :validate_unique_lanes_among_entries
+  validate :validate_unique_student_names_among_entries
 
   private
 
@@ -28,6 +30,23 @@ class Race < ApplicationRecord
         return
       end
       expected += count
+    end
+  end
+
+  def validate_unique_lanes_among_entries
+    lanes = race_entries.reject(&:marked_for_destruction?).map { |entry| entry.lane.to_i }
+    if lanes.size != lanes.uniq.size
+      errors.add(:base, "Each lane must be unique within a race")
+    end
+  end
+
+  def validate_unique_student_names_among_entries
+    names = race_entries.reject(&:marked_for_destruction?).map do |entry|
+      entry.student_name.to_s.strip.downcase
+    end
+
+    if names.size != names.uniq.size
+      errors.add(:base, "Each student can only be assigned once per race")
     end
   end
 end
