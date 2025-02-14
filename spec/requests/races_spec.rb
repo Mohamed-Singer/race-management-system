@@ -17,7 +17,7 @@ RSpec.describe "Races", type: :request do
       get races_path
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Create New Race")
-      expect(response.body).to include("Race Oe")
+      expect(response.body).to include("Race One")
       expect(response.body).to include("Race Two")
     end
   end
