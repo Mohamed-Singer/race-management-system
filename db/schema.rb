@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_14_142327) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_14_143903) do
+  create_table "race_entries", force: :cascade do |t|
+    t.integer "race_id", null: false
+    t.string "student_name", null: false
+    t.integer "lane", null: false
+    t.integer "final_place"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["race_id", "lane"], name: "index_race_entries_on_race_id_and_lane", unique: true
+    t.index ["race_id", "student_name"], name: "index_race_entries_on_race_id_and_student_name", unique: true
+    t.index ["race_id"], name: "index_race_entries_on_race_id"
+  end
+
   create_table "races", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "race_entries", "races", on_delete: :cascade
 end
