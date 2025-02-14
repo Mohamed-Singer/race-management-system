@@ -2,7 +2,15 @@ require 'rails_helper'
 
 RSpec.describe RaceEntry, type: :model do
   describe "validations" do
-    let(:race) { Race.create!(name: "100m Sprint") }
+    let(:race) do
+      Race.create!(
+        name: "100m Sprint",
+        race_entries_attributes: [
+          { student_name: "One", lane: 3 },
+          { student_name: "Two", lane: 4 }
+        ]
+      )
+    end
 
     context "student_name" do
       it "validates presence of student_name" do
@@ -54,5 +62,5 @@ RSpec.describe RaceEntry, type: :model do
         expect(entry.errors[:final_place]).to include("must be greater than 0")
       end
     end
-  end  
+  end
 end

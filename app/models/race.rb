@@ -4,4 +4,15 @@ class Race < ApplicationRecord
 
 
   validates :name, presence: true
+
+  validate :validate_minimum_race_entries
+
+  private
+
+  def validate_minimum_race_entries
+    valid_entries = race_entries.reject(&:marked_for_destruction?)
+    if valid_entries.size < 2
+      errors.add(:base, "Race must have at least two race entries")
+    end
+  end
 end
