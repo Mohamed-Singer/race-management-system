@@ -49,10 +49,12 @@ A web-based application for managing race results at schools. This system allows
     rails db:create
     rails db:migrate
     ```
-4. **Run the Test Suite**
+4. **Run Tests and Coverage**
    ```bash
    bundle exec rspec
    ```
+   SimpleCov gem will automatically generate a coverage report in the coverage directory. Open coverage/index.html in your browser to view detailed coverage statistics.
+
 5. **Start the Rails Server**
    ```bash
    rails server
