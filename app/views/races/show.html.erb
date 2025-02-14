@@ -1,0 +1,26 @@
+<h1 class="mb-4">Race: <%= @race.name %></h1>
+<div class="mb-3">
+  <%= link_to "Back", races_path, class: "btn btn-secondary" %>
+</div>
+
+<h2>Race Entries</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Lane</th>
+      <th>Student Name</th>
+      <th>Final Place</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @race.race_entries.each do |entry| %>
+      <tr>
+        <td><%= entry.lane %></td>
+        <td><%= entry.student_name %></td>
+        <td><%= entry.final_place.present? ? entry.final_place : "Not entered" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Edit Race Results", edit_race_path(@race), class: "btn btn-primary" %>

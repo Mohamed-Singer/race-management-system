@@ -1,0 +1,59 @@
+<h1 class="mb-4">New Race</h1>
+<div class="mb-3">
+  <%= link_to "Back", races_path, class: "btn btn-secondary" %>
+</div>
+
+<%= form_with(model: @race, local: true) do |f| %>
+  <%= render 'shared/error_messages', object: @race %>
+
+  <div class="form-group">
+    <%= f.label :name, "Race Name" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <h2>Race Entries</h2>
+  <div id="race_entries">
+    <% @race.race_entries.each_with_index do |entry, index| %>
+      <%= f.fields_for :race_entries, entry do |entry_form| %>
+        <%= render 'race_entry_fields', f: entry_form, index: index %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= link_to "Add another student", "#", id: "add_race_entry", class: "btn btn-info" %>
+  </div>
+
+  <div>
+    <%= f.submit "Create Race", class: "btn btn-primary" %>
+  </div>
+
+  <!-- Hidden template for new race entry fields -->
+  <div id="race_entry_template" style="display: none;">
+    <%= f.fields_for :race_entries, RaceEntry.new, child_index: "NEW_RECORD" do |entry_form| %>
+      <%= render 'race_entry_fields', f: entry_form, index: nil %>
+    <% end %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Handle dynamic addition of race entries.
+    document.getElementById("add_race_entry").addEventListener("click", function(e) {
+      e.preventDefault();
+      let container = document.getElementById("race_entries");
+      let template = document.getElementById("race_entry_template").innerHTML;
+      let newId = new Date().getTime();
+      template = template.replace(/NEW_RECORD/g, newId);
+      container.insertAdjacentHTML("beforeend", template);
+    });
+
+    // Handle removal of race entries (only extra ones will have the remove link).
+    document.addEventListener("click", function(e) {
+      if (e.target && e.target.classList.contains("remove_fields")) {
+        e.preventDefault();
+        e.target.closest(".nested-fields").remove();
+      }
+    });
+  });
+</script>
