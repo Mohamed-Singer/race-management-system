@@ -2,6 +2,12 @@
 
 A web-based application for managing race results at schools. This system allows teachers to create races, assign students to lanes, record final race results, and view outcomes. The application is built entirely in Ruby on Rails (Ruby 3.4, Rails 7.2) and features dynamic nested forms, custom validations, and an enhanced user interface powered by Bootstrap.
 
+## Table of Contents
+
+- [Features](#features)
+- [Architecture and Implementation](#architecture-and-implementation)
+- [Getting Started](#getting-started)
+
 ## Features
 
 - **Race Setup & Management**
@@ -23,6 +29,28 @@ A web-based application for managing race results at schools. This system allows
   - Responsive UI built with Bootstrap.
   - Clear navigation with Home, Back, and action buttons.
   - Inline error display using a shared error messages partial.
+  - Dynamic form fields for adding extra race entries.
+
+## Architecture and Implementation
+
+The application is structured using standard Rails MVC convention:
+
+- **Models:**
+  - **Race:** The primary model that represents a race. It has many associated `RaceEntry` objects. It leverages nested attributes to manage race entries directly from the race forms.
+  - **RaceEntry:** Represents individual race entries (student participation). Custom validations ensure that lanes and student names are unique within a race.
+  - **Custom Validations:** Implemented in the `Race` model to enforce a minimum number of valid entries, verify finishing positions' consistency when entered, and to check for duplicate lanes and student names among nested race entries. This prevents database-level uniqueness errors before saving.
+  
+- **Controllers:**
+  - **RacesController:** Follows RESTful conventions to handle creating, reading, updating, and deleting races. It also manages nested attributes for race entries.
+  
+- **Views:**
+  - **New Race Form:** Provides a user-friendly form where the first two race entries are mandatory and non-removable. Users can dynamically add more entries using JavaScript.
+  - **Error Handling:** Uses a shared partial to display validation errors without breaking the UI.
+  - **Enhanced UI:** Built using Bootstrap for a modern and responsive layout. Navigation buttons (Home, Back) are present on all applicable pages.
+  
+- **JavaScript and UI Enhancements:**
+  - The dynamic nested form fields for race entries are handled with vanilla JavaScript. New fields are added or removed without reloading the page.
+  - Bootstrap’s CSS and JS are used to ensure a consistent look and feel.
 
 ## Getting Started
 
